@@ -45,7 +45,7 @@ func (a *bus) Subscribe(ctx context.Context, req SubscribeRequest, handler Handl
 
 	// For this component we allow built-in retries because it is backed by memory
 	retryHandler := func(data []byte) {
-		for range 10 {
+		for i := 0; i < 10; i++ {
 			handleErr := handler(ctx, &NewMessage{Data: data, Topic: req.Topic, Metadata: req.Metadata})
 			if handleErr == nil {
 				break

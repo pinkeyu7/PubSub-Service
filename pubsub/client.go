@@ -15,9 +15,15 @@ type PubSubClient struct {
 	client pubsub.PubSubClient
 }
 
+type PubSubClientInterface interface {
+	Subscribe(ctx context.Context, topic, subscription string, callback func(message string)) error
+	Publish(ctx context.Context, topic, message string) error
+	Close()
+}
+
 // NewPubSubClient initializes a new PubSubClient
-func NewPubSubClient(serverAddr string) (*PubSubClient, error) {
-	conn, err := grpc.Dial(serverAddr, grpc.WithInsecure())
+func NewPubSubClient(serverAddr string) (PubSubClientInterface, error) {
+	conn, err := grpc.NewClient(serverAddr, grpc.WithInsecure())
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to gRPC server: %w", err)
 	}

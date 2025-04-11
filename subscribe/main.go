@@ -16,7 +16,7 @@ func main() {
 	defer pubSubClient.Close()
 
 	// Subscribe to the topic "main" and process messages
-	err = pubSubClient.Subscribe(context.Background(), "main", "subscriber-1", handler)
+	err = pubSubClient.Subscribe(context.Background(), "*", "subscriber-1", handler)
 	if err != nil {
 		log.Fatalf("Subscription error: %v", err)
 	}
