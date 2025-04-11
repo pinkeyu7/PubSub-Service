@@ -41,6 +41,7 @@ type eventHandler struct {
 	sync.Mutex    // lock for an event handler - useful for running async callbacks serially
 }
 
+// NewEventbus returns new EventBus with empty handlers.
 func NewEventbus(enableWildcards bool) Bus {
 	b := &EventBus{
 		enableWildcards,

@@ -40,7 +40,7 @@ func NewPubSubService() (*PubSubService, func()) {
 
 func (s *PubSubService) Subscribe(req *pubsub.SubscribeRequest, stream pubsub.PubSub_SubscribeServer) error {
 	ctx := stream.Context()
-	err := s.queue.Subscribe(ctx, &SubscribeRequest{Topic: req.Topic}, func(ctx context.Context, msg *NewMessage) error {
+	err := s.queue.Subscribe(ctx, SubscribeRequest{Topic: req.Topic}, func(ctx context.Context, msg *NewMessage) error {
 		response := &pubsub.SubscribeResponse{
 			Topic:        msg.Topic,
 			Subscription: req.Subscription,

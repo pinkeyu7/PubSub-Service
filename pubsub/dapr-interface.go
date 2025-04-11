@@ -7,7 +7,7 @@ import (
 type PubSub interface {
 	Init(ctx context.Context) error
 	Publish(ctx context.Context, req *PublishRequest) error
-	Subscribe(ctx context.Context, req *SubscribeRequest, handler Handler) error
+	Subscribe(ctx context.Context, req SubscribeRequest, handler Handler) error
 	Close() error
 }
 

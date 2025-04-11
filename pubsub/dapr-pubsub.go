@@ -38,7 +38,7 @@ func (a *bus) Publish(_ context.Context, req *PublishRequest) error {
 	return nil
 }
 
-func (a *bus) Subscribe(ctx context.Context, req *SubscribeRequest, handler Handler) error {
+func (a *bus) Subscribe(ctx context.Context, req SubscribeRequest, handler Handler) error {
 	if a.closed.Load() {
 		return errors.New("component is closed")
 	}
@@ -50,20 +50,17 @@ func (a *bus) Subscribe(ctx context.Context, req *SubscribeRequest, handler Hand
 			if handleErr == nil {
 				break
 			}
-
 			log.Println(handleErr)
 			select {
 			case <-time.After(100 * time.Millisecond):
-				log.Println("Retrying...")
+				// Nop
 			case <-ctx.Done():
-				log.Println("Context done, stopping retries")
 				return
 			}
 		}
 	}
 	err := a.bus.SubscribeAsync(req.Topic, retryHandler, true)
 	if err != nil {
-		log.Printf("error while subscribing to topic %s: %v", req.Topic, err)
 		return err
 	}
 
